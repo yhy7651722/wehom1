@@ -1,0 +1,97 @@
+
+{include file='public/header' title=$title /}
+<link rel="stylesheet" href="__CSS_PATH__cpzx.css">
+<link rel="stylesheet" href="/wehome1/public/static/css/layui.css">
+<script src="/wehome1/public/static/layui.js"></script>
+    <div class="box">
+        <div class="container">
+            <div class="row">
+
+                <!-- 图片开始 -->
+                <div class="tu  ">
+                    <img src="__IMG_PATH__/fc/lbt2.jpg" alt="">
+                </div>
+
+
+                <!-- 图片结束 -->
+                <!-- 分割栏开始 -->
+                <div class="fg col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class=" left "></div>
+                    <div class="flow  ">
+                        <div class="top ">{$current['nname']}</div>
+                        <div class="down">{$current['ename']}</div>
+
+
+                    </div>
+                    <div class=" right "></div>
+
+
+
+                </div>
+                <!-- 分割栏结束 -->
+
+                <div class="cp   col-lg-12">
+                    <ul class="bq col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+                        {volist name= "navdata" id="vo"}
+                        <li class="item hr" id="{$vo.id}">
+                            {$vo.cname}
+                        </li>
+                        {/volist}
+                    </ul>
+
+                    {volist name= "datas" id="v"}
+                    <div class="bb">
+                        {volist name= "v" id="vo"}
+                        <div class="zp col-xs-3 col-md-3 col-sm-3 col-xs-3 ">
+
+                            <a href="product?gid={$vo.gid}">
+                                <div class="tp" >
+                                    <img style="width: 214px;height: 214px;" src="{$vo.thumb}" alt="" >
+                                </div>
+                                <div style="text-align: center">
+                                    <a href="product?gid={$vo.gid}"> {$vo.gname}</a></div>
+                            </a>
+
+                        </div>
+
+                        {/volist}
+                    </div>
+               {/volist}
+
+
+
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+        {include file='public/foot' title='$title' /}
+<!--<script src="__JS_PATH__/cpzx.js"></script>-->
+        <script>
+            layui.use(['table','layer'], function() {
+                var table = layui.table;
+                var $ = layui.jquery;
+                let box = $('.bq').children("li");
+                let ul = $('.cp').children(".bb");
+                console.log(box);
+
+                ul.css("display", "none");
+                ul[0].style.display = "block";
+                for (let i = 0; i < box.length; i++) {
+                    box[i].onclick = function () {
+                        for (let j = 0; j < box.length; j++) {
+                            ul[j].style.display = "none";
+                        }
+                        ul[i].style.display = "block";
+                    }
+                }
+            })
+        </script>
+

@@ -1,0 +1,180 @@
+{include file='public/header'title=$title /}
+<link rel="stylesheet" href="__CSS_PATH__在线预约.css">
+<link rel="stylesheet" href="http://at.alicdn.com/t/font_1383131_ijm7gkm2xtg.css">
+<link rel="stylesheet" href="http://at.alicdn.com/t/font_1351160_ne6jrxlcrwa.css">
+<link rel="stylesheet" href="http://at.alicdn.com/t/font_1351160_n13lb1rmev.css">
+<link rel="stylesheet" href="__CSS_PATH__com(2).css">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- 底部部分结束 -->
+<div class="photo-big">
+    <div class="container">
+        <div class="row">
+            <!-- 图片部分开始 -->
+            <div class="picture col-1g-12  col-md-12  col-sm-12 col-xs-12" style="width: 100%;height:100%">
+                <div class="image">
+                    <img src="__IMG_PATH__fc/lbt.jpg" alt="">
+                </div>
+                <!-- 图片部分结束 -->
+                <div class="fg col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class=" left "></div>
+                    <div class="flow">
+                        <div class="top ">{$current['nname']}</div>
+                        <div class="down">{$current['ename']}</div>
+                    </div>
+                    <div class=" right "></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 表格部分开始 -->
+<div class="box">
+    <div class="container">
+        <div class="row">
+            <div class="middle-left col-lg-3"></div>
+
+            <div class="middlebox col-lg-6">
+                <form>
+                    <div class="form-group">
+                        <!-- 预约服务文本框部分开始 -->
+                        <div class="a-line">
+                            <div class="text">
+                                <span>预约服务:</span>
+                            </div>
+                            <div class="input-one">
+                                <select class="option-one" name="service" id="">
+                                    <option value="翡翠咨询">翡翠咨询</option>
+                                    <option value="翡翠预定">翡翠预定</option>
+                                    <option value="翡翠售后">翡翠售后</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- 预约服务文本框部分结束 -->
+                        <!-- 预约日期部分开始 -->
+                        <div class="second">
+                            <div class="text-two">
+                                <span>预约日期:</span>
+                            </div>
+                            <div class="input-two">
+                                <input type="date" class="calendar" name="sdate" id="">
+                            </div>
+                            <div class="prompt">
+                                <span><i class="iconfont icon-jinggao"></i>这是一个必填项哦</span>
+                            </div>
+                        </div>
+                        <!-- 预约日期部分结束 -->
+                        <!-- 预约姓名部分开始 -->
+                        <div class="name">
+                            <div class="name-text">
+                                <span>您的姓名:</span>
+                            </div>
+
+                            <div class="input-three">
+                                <input type="text" class="content-name" name="sname">
+                            </div>
+                            <div class="prompt-two">
+                                <span><i class="iconfont icon-jinggao"></i>这是一个必填项哦</span>
+                            </div>
+                        </div>
+                        <!-- 预约姓名部分结束 -->
+                        <!-- 预约性别部分开始 -->
+                        <div class="cender">
+                            <div class="cender-text">
+                                <span>您的性别:</span>
+                            </div>
+
+                            <div class="input-four">
+                                <input id="nan" type="radio" name="ssex" value="男">男
+                                <input id="nv" type="radio" name="ssex" value="女">女
+                            </div>
+                            <div class="prompt-thee">
+                                <span><i class="iconfont icon-jinggao"></i>这是一个必填项哦</span>
+                            </div>
+                        </div>
+                        <!-- 预约性别部分结束 -->
+                        <!-- 预约您的电话开始 -->
+                        <div class="telephone">
+                            <div class="telephone-text">
+                                <span>您的电话:</span>
+                            </div>
+                            <div class="input-five">
+                                <input type="text" class="telephone-name" name="telephone">
+                            </div>
+                        </div>
+                        <div class="prompt-four">
+                            <span><i class="iconfont icon-jinggao"></i>这是一个必填项哦</span>
+                        </div>
+                        <!-- 预约您的电话结束 -->
+                        <!-- 补充说明部分开始 -->
+                        <div class="supplement">
+                            <div class="supplement-text">
+                                <span>补充说明:</span>
+                            </div>
+                            <div class="frame">
+                                <textarea class="supplement-name" name="sexplain" id="" cols="30" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="prompt-five">
+                            <span><i class="iconfont icon-jinggao"></i>这是一个必填项哦</span>
+                        </div>
+                        <!-- 补充说明部分结束 -->
+                        <!-- 验证码部分开始 -->
+                        <div class="code">
+                            <div class="code-text">
+                                <span>验证码:</span>
+                            </div>
+                            <div class="input-six">
+                                <input type="text" class="code-name" name="">
+                            </div>
+
+                            <div class="verification">
+                                <canvas id="canvas" width="100" height="35" onclick="dj()" style="border: 1px solid #ccc;
+                                border-radius: 5px;"></canvas>
+                            </div>
+                            <div class="prompt-six">
+                                <span><i class="iconfont icon-jinggao"></i>这是一个必填项哦</span>
+                            </div>
+                        </div>
+                        <!-- 验证码部分结束 -->
+                        <!-- 提交预约部分开始 -->
+                        <button class="submit" style=" margin-top: 70px;margin-left: 10px;background-color: #333333;width: 100px;height: 25.6px;
+    text-align: center;font-size: 14px; line-height: 25.6px;color: #ffffff;">提交预约</button>
+
+                        <div class="middle-right col-lg-3"></div>
+                    </div>
+                </form>
+                <!-- 提交预约部分结束 -->
+            </div>
+
+        </div>
+    </div>
+</div>
+{include file='public/foot'/}
+<script src="__JS_PATH__在线预约.js"></script>
+<script src="__JS_PATH__com.js"></script>
+<script>
+    $('form').on('submit',function (e) {
+        e.preventDefault();
+        let formdata= new FormData(this);
+
+        $.ajax({
+            url:'/wehome1/public/index.php/index/category/insert',
+            type:"POST",
+            dataType:'json',
+            data:formdata,
+            processData:false,
+            contentType:false,
+            context:this,
+            success:function (res) {
+                if (res.code === 200){
+                    alert(res.msg);
+                    this.reset();
+                } else{
+                    alert(res.msg);
+                }
+            }
+        })
+    })
+</script>

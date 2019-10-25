@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="/wehome1/public/static/css/layui.css">
+<script src="/wehome1/public/static/layui.js"></script>
+<body>
+<table  id="demo" lay-filter="test"></table>
+<table class="layui-hide" id="test" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script>
+    layui.use(['table','layer'], function(){
+        var table = layui.table;
+        var $=layui.jquery;
+        table.render({
+                elem:'#demo',
+                url:'/wehome1/public/index.php/admin/neww/query',
+                toolbar: '#toolbarDemo' ,
+                cols:[[
+                    {field:'id',title:'ID'},
+                    {field:'nname',title:'新闻名称',edit: 'text'},
+                    {field:'ndata',title:'新闻时间',edit: 'text'},
+                    {field:'ntext',title:'新闻详情',edit: 'text'},
+                    {fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ]],
+
+            }
+
+        );
+        //第一个实例
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            let index=   layer.load(2);
+            $.ajax({
+                url: "/wehome1/public/index.php/admin/neww/update",
+                type: "POST",
+                data: {'id':data.id,'value':value,'field':field},
+                success: function (msg) {
+                    if (msg.code == 200) {
+
+                        // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+
+                        //关闭弹框
+
+                        layer.msg("修改成功", {icon: 6});
+                        layer.close(index);
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+            });
+            return false;
+
+        });
+
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            // console.log(obj);
+            let id=data.id;
+            if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    $.ajax({
+                        url: "/wehome1/public/index.php/admin/neww/delete",
+                        type: "POST",
+                        data: {'id':id},
+                        success: function (msg) {
+                            if (msg.code == 200) {
+                                //删除这一行
+                                obj.del();
+                                //关闭弹框
+                                layer.close(index);
+                                layer.msg("删除成功", {icon: 6});
+                            } else {
+                                layer.msg("删除失败", {icon: 5});
+                            }
+                        }
+                    });
+                    return false;
+
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+</body>
+</html>

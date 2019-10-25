@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" href="/wehome1/public/static/css/layui.css">
+<script src="/wehome1/public/static/layui.js"></script>
+<body>
+<form class="layui-form" id="demo2" action="">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">所属分类</label>
+            <div class="layui-input-block">
+                <select name="cid" lay-verify="">
+                    <option value=""></option>
+                    {volist name="cate" id="vo"}
+                    <option value="{$vo.id}">{$vo.cname}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="gname" placeholder="例如：茉莉花" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">价格范围</label>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="price_min" placeholder="￥" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid">-</div>
+            <div class="layui-input-inline" style="width: 100px;">
+                <input type="text" name="price_max" placeholder="￥" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+    </div>
+</form>
+<table  id="demo" lay-filter="test"></table>
+<table class="layui-hide" id="test" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/html" id="bannerTpl">
+{{# let arr = d.banner.split(',') }}
+{{# arr.forEach(ele=>{ }}
+     <img src="{{ ele }}" alt="">
+    {{# }) }}
+</script>
+
+<script>
+    const HOSTNAME='/wehome1/public/index.php';
+    layui.use(['table','layer','form'], function(){
+        //页数
+        //页码：page 条数：limit
+        var form=layui.form;
+        var table = layui.table;
+        var $=layui.jquery;
+let tableIns= table.render({
+                elem:'#demo',
+                url:'/wehome1/public/index.php/admin/goods/query',
+            toolbar: '#toolbarDemo' ,
+            page:true,
+            limit:5,
+                cols:[[
+                    {field:'gid',title:'ID'},
+                    {field:'gname',title:'商品名字'},
+                    {field:'mprice',title:'市场价'},
+                    {field:'sale',title:'零售价'},
+                    {field:'stock',title:'库存'},
+                    {field:'cid',title:'商品所属分类'},
+                    {field:'thumb',title:'缩略图',templet:function (d) {
+                            return '<img src="'+d.thumb+'">'
+                        }},
+                    {field:'banner',title:'轮播图',templet:'#bannerTpl'},
+                    {fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ]],
+
+        }
+
+        );
+        //第一个实例
+        table.on('edit(test)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+         let index=   layer.load(2);
+
+            $.ajax({
+                url: "/wehome1/public/index.php/admin/goods/update",
+                type: "POST",
+                data: {'id':data.id,'value':value,'field':field},
+                success: function (msg) {
+                    if (msg.code == 200) {
+
+                        // layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+
+                        //关闭弹框
+
+                        layer.msg("修改成功", {icon: 6});
+                        layer.close(index);
+                    } else {
+                        layer.msg("修改失败", {icon: 5});
+                    }
+                }
+            });
+            return false;
+
+        });
+
+
+    //监听行工具事件
+    table.on('tool(test)', function(obj){
+        var data = obj.data;
+        // console.log(obj);
+        let id=data.gid;
+        if(obj.event === 'del'){
+            layer.confirm('真的删除行么', function(index){
+                $.ajax({
+                    url: "/wehome1/public/index.php/admin/goods/delete",
+                    type: "POST",
+                    data: {'gid':id},
+                    success: function (msg) {
+                        if (msg.code == 200) {
+                            //删除这一行
+                            obj.del();
+                            //关闭弹框
+                            layer.close(index);
+                            layer.msg("删除成功", {icon: 6});
+                        } else {
+                            layer.msg("删除失败", {icon: 5});
+                        }
+                    }
+                });
+                return false;
+
+                obj.del();
+                layer.close(index);
+            });
+        } else if(obj.event === 'edit'){
+            layer.prompt({
+                formType: 2
+                ,value: data.email
+            }, function(value, index){
+                obj.update({
+                    email: value
+                });
+                layer.close(index);
+            });
+        }
+    });
+    form.on('submit(*)',function (data) {
+            let a=data.field;
+            console.log(a);
+        tableIns.reload({
+
+                    where: {
+                        a
+                    },
+                    page:{
+                        curr:1
+                    },
+                }
+            );
+            return false;
+        });
+    });
+
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+</body>
+</html>

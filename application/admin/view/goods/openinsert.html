@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加导航</title>
+    <link rel="stylesheet" href="/wehome1/public/static/css/layui.css">
+    <script src="/wehome1/public/static/layui.js"></script>
+</head>
+
+<body>
+<form class="layui-form">
+    <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类</label>
+        <div class="layui-input-block">
+            <select name="cid" lay-verify="required">
+                <option value=""></option>
+                {volist name="cate" id="v"}
+                <option value="{$v.id}">{$v.cname}</option>
+                {/volist}
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="gname" placeholder="请输入3-10个字符" autocomplete="off" class="layui-input"
+                   lay-verify="required|gname">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">市场价格</label>
+        <div class="layui-input-block">
+            <input type="number" name="mprice" placeholder="请输入市场价格" autocomplete="off" class="layui-input"
+                   lay-verify="required|number">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">零售价</label>
+        <div class="layui-input-block">
+            <input type="number" name="sale" placeholder="请输入商品零售价" autocomplete="off" class="layui-input"
+                   lay-verify="required|number">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">库存</label>
+        <div class="layui-input-block">
+            <input type="number" name="stock" placeholder="请输入库存" autocomplete="off" class="layui-input"
+                   lay-verify="required|number">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">缩略图 </label>
+        <span>上传图片最佳尺寸200x200，最佳比例为1:1</span>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="test1">上传图片</button>
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;margin-left: 110px">
+                预览图：
+                <div class="layui-upload-list" id="demo1">
+                    <img src="" alt="" style="width: 100px; " id="thumb">
+                </div>
+
+                <input type="hidden" name="thumb">
+            </blockquote>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">轮播图</label>
+        <div class="layui-upload">
+            <button type="button" class="layui-btn" id="test2">多图片上传</button>
+            <blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;margin-left: 110px">
+                预览图：
+                <div class="layui-upload-list" id="demo2">
+
+                </div>
+
+                <input type="hidden" name="banner">
+            </blockquote>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详情</label>
+        <div class="layui-input-block">
+            <textarea id="demo"  style="display: none;"  name="detail" required  placeholder="请输入" class="layui-textarea"></textarea>
+
+        </div>
+    </div>
+    <!--<div class="layui-form-item">-->
+    <!--<label class="layui-form-label">详情</label>-->
+    <!--<div class="layui-input-block">-->
+    <!--<input type="date" name="create_time" placeholder="请输入导航模板" autocomplete="off" class="layui-input"-->
+    <!--lay-verify="required"  >-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+
+</form>
+<script>
+
+</script>
+<script>
+    layui.use(['form', 'upload', 'layer','layedit'], function () {
+        let $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var upload = layui.upload;
+
+
+        const HOSTNAME = '/wehome1/public/index.php';
+        upload.render({
+            elem: '#test1'
+            , url: HOSTNAME + '/admin/upload/index'
+            , accept: 'images',
+            acceptMime: 'image/*',
+            size: 200,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code === 0) {
+                    $('input[name=thumb]').val(res.data.src);
+                    $('#demo1').attr('src', res.data.src);
+                }
+                //上传成功
+            }
+
+        });
+        upload.render({
+            elem: '#test2'
+            , url: HOSTNAME + '/admin/upload/index'
+            , multiple: true,
+            number: 3
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo2').append('<img src="' + result + '" alt="' + file.name + '" class="layui-upload-img">')
+                });
+            }
+            , done: function (res) {
+                //上传完毕
+                if (res.code === 0) {
+                    $('<img>').attr('src',res.data.src).css('width',200).appendTo('#banner');
+                    $('input[name=banner]').val((index,value)=>value+res.data.src+',');
+
+                }
+                //上传成功
+            }
+        });
+        form.verify({
+
+        });
+        var layedit = layui.layedit;
+        // layedit.set();
+        layedit.set({
+            uploadImage: {
+                url: HOSTNAME + '/admin/upload/index' //接口url
+                ,type: 'POST' //默认post
+            }
+        });
+        var index =  layedit.build('demo'); //建立编辑器
+
+
+        form.on('submit(*)', function (data) {
+            var a = data.field;
+               delete a.file;
+               data.field.banner=data.field.banner.slice(0,-1);
+                 a.detail=layedit.getContent(index);
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/wehome1/public/index.php/admin/goods/insert',
+                dataType: 'json',
+                data: a,
+                context: this,
+                success: function (res) {
+                    if (res.code == 200) {
+
+                        layer.msg(res.msg);
+                        $('form')[0].reset();
+                        $('input[type=hidden]').val('');
+                        $('#demo1>img').remove();
+                        $('#demo2>img').remove();
+
+                    } else {
+                        layer.msg(res.msg);
+                    }
+
+                }
+            });
+            return false;
+
+        })
+        //各种基于事件的操作，下面会有进一步介绍
+    });
+</script>
+</body>
+</html>

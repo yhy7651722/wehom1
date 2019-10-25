@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>学生实习管理系统</title>
+    <link rel="stylesheet" href="/wehome1/public/static/css/layui.css">
+    <script src="/wehome1/public/static/layui.js"></script>
+    <style>
+        .layui-tab{
+            position: relative;
+            height: calc(100% - 20px );
+            width: 100%;
+        }
+        .layui-tab>.layui-tab-content{
+            position: absolute;
+            top: 41px;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+
+        }
+        iframe{
+            width: 100%;
+            height: 100%;
+
+        }
+        .layui-tab-item{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body >
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">layui 后台布局</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="/wehome1/public/static/images/face/25.gif" class="layui-nav-img">
+                  {$user['username']}
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="/wehome1/public/index.php/admin/login/index">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">导航管理</a>
+                    <dl class="layui-nav-child">
+                        <dd data-id="11" data-url="/wehome1/public/admin/nav/openinsert"><a href="javascript:;">添加导航</a></dd>
+                        <dd data-id="12"  data-url="/wehome1/public/admin/nav/index"><a href="javascript:;">查看导航</a></dd>
+
+
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed" >
+                    <a href="javascript:;">商品分类</a>
+                    <dl class="layui-nav-child">
+                        <dd data-id="21" data-url="/wehome1/public/admin/category/openinsert"><a href="javascript:;">插入分类</a></dd>
+                        <dd data-id="22" data-url="/wehome1/public/admin/category/index"><a href="javascript:;">查看分类</a></dd>
+
+
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">商品管理</a>
+                    <dl class="layui-nav-child">
+                        <dd data-id="31" data-url="/wehome1/public/admin/goods/openinsert"><a href="javascript:;">添加商品</a></dd>
+
+                        <dd data-id="32" data-url="/wehome1/public/admin/goods/index"><a href="javascript:;">查看商品</a></dd>
+
+
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed" >
+                    <a href="javascript:;">新闻详情</a>
+                    <dl class="layui-nav-child">
+                        <dd data-id="41" data-url="/wehome1/public/admin/neww/openinsert"><a href="javascript:;">插入新闻</a></dd>
+                        <dd data-id="42" data-url="/wehome1/public/admin/neww/index"><a href="javascript:;">查看新闻</a></dd>
+
+
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed" >
+                    <a href="javascript:;">预约详情</a>
+                    <dl class="layui-nav-child">
+                        <dd data-id="51" data-url="/wehome1/public/admin/zxyy/index"><a href="javascript:;">预约查看</a></dd>
+
+
+
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+
+        <div style="padding: 15px; width: 100%; height: 100%;box-sizing: border-box">
+        <div class="layui-tab" lay-filter="demo" lay-allowclose="true">
+            <ul class="layui-tab-title">
+
+
+            </ul>
+            <div class="layui-tab-content">
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+
+<script>
+
+    //JavaScript代码区域
+    layui.use(['element'], function () {
+        let $=layui.jquery,element=layui.element;
+        $('dd').on('click',function () {
+            let id=this.dataset.id;
+            // let titl=$('a',this).text();
+            let tittle=$(this).children('a').html();
+            let arr=$('.layui-tab-title>li');
+
+            //映射
+        //     let lis=arr.map(function (index,element) {
+        //         return element.getAttribute('lay-id');
+        //     });
+        //     Array.from(lis).some(ele=>ele==id);
+        // let flage=Array.prototype.some.call(lis,ele=>ele==id);
+        //     let lis=$('li[lay-id]');
+            let k=0;
+            for(let i=0;i<arr.length;i++){
+               // console.log( arr[i].getAttribute('lay-id'));
+                if (id===arr[i].attributes[0].value){
+                    // element.tabChange('demo', id);
+                    k=1;
+                }
+            }
+
+            if(k===0){
+                let urls=this.dataset.url;
+                element.tabAdd('demo', {
+                    title: tittle ,
+                    content:`<iframe frameborder="0" src="${urls}"></iframe>`
+                    ,
+                    id:id
+                });
+                element.tabChange('demo', id);
+
+            }else {
+                element.tabChange('demo', id);
+            }
+        });
+    });
+
+    //触发事件
+
+//映射
+
+
+</script>
+</body>
+</html>

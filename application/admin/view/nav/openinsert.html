@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加导航</title>
+    <link rel="stylesheet" href="/wehome1/public/static/css/layui.css">
+    <script src="/wehome1/public/static/layui.js"></script>
+</head>
+<body>
+<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">导航名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="nname" placeholder="请输入导航名称" autocomplete="off" class="layui-input" lay-verify="required|nname">
+        </div>
+    </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">英文名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="ename" placeholder="请输入导航英文名称" autocomplete="off" class="layui-input" lay-verify="required|ename">
+            </div>
+        </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">导航排序</label>
+                <div class="layui-input-block">
+                    <input type="text" name="nsort" placeholder="请输入导航排序" autocomplete="off" class="layui-input" lay-verify="required|number">
+                </div>
+            </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">导航模板</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ntpl" placeholder="请输入导航模板" autocomplete="off" class="layui-input" lay-verify="required|ntpl">
+                    </div>
+                </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+
+</form>
+
+<script>
+    layui.use(['form'], function(){
+        let $=layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        form.verify({
+            nname: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+                    return '用户名不能有特殊字符';
+                }
+                if(/(^\_)|(\__)|(\_+$)/.test(value)){
+                    return '用户名首尾不能出现下划线\'_\'';
+                }
+                if(/^\d+\d+\d$/.test(value)){
+                    return '用户名不能全为数字';
+                }
+            },
+            ename: [/^[a-zA-Z ]{0,100}$/,'请输入英文'
+
+            ],
+
+            ntpl: [/^[a-zA-Z][a-zA-Z/s]{1,100}$/,'请输入英文'
+
+            ],
+
+
+        });
+      form.on('submit(*)',function (data) {
+       var a=  data.field;
+
+          $.ajax({
+              type:'POST',
+              url:'/wehome1/public/index.php/admin/nav/insert',
+              dataType:'json',
+              data:a,
+              context:this,
+              success:function (res) {
+              if(res.code==200){
+                  layer.msg(res.msg);
+
+
+              }
+                else {
+                  layer.msg(res.msg);
+              }
+
+              }
+          });
+           return false;
+
+})
+        //各种基于事件的操作，下面会有进一步介绍
+    });
+    </script>
+</body>
+</html>

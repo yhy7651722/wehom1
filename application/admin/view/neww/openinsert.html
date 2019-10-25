@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加导航</title>
+    <link rel="stylesheet" href="/wehome1/public/static/css/layui.css">
+    <script src="/wehome1/public/static/layui.js"></script>
+</head>
+<body>
+<form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <div class="layui-form-item">
+        <label class="layui-form-label">新闻名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="nname" placeholder="请输入新闻名称" autocomplete="off" class="layui-input" lay-verify="required|nname">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">时间</label>
+        <div class="layui-input-block">
+            <input type="date" name="ndata" placeholder="请输入导航英文名称" autocomplete="off" class="layui-input" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详情</label>
+        <div style="margin-left: 110px">
+        <textarea name="ntext" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+    </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="*">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+
+</form>
+
+<script>
+    layui.use(['form', 'upload', 'layer','layedit'], function(){
+        let $=layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+
+        var layedit = layui.layedit;
+        const HOSTNAME = '/wehome1/public/index.php';
+        // layedit.set();
+
+        // layedit.set();
+        layedit.set({
+            uploadImage: {
+                url: HOSTNAME + '/admin/upload/index' //接口url
+                ,type: 'POST' //默认post
+            }
+        });
+        var index =  layedit.build('demo'); //建立编辑器
+
+        form.verify({
+            //value：表单的值、item：表单的DOM对象
+
+            ename: [/^[a-zA-Z ]{0,100}$/,'请输入英文'
+
+            ],
+
+            ntpl: [/^[a-zA-Z][a-zA-Z/s]{1,100}$/,'请输入英文'
+
+            ],
+
+
+        });
+        form.on('submit(*)',function (data) {
+            var a=  data.field;
+             delete a.file;
+            $.ajax({
+                type:'POST',
+                url:'/wehome1/public/index.php/admin/neww/insert',
+                dataType:'json',
+                data:a,
+                context:this,
+                success:function (res) {
+                    if(res.code==200){
+                        layer.msg(res.msg);
+
+
+                    }
+                    else {
+                        layer.msg(res.msg);
+                    }
+
+                }
+            });
+            return false;
+
+        })
+        //各种基于事件的操作，下面会有进一步介绍
+    });
+</script>
+</body>
+</html>
